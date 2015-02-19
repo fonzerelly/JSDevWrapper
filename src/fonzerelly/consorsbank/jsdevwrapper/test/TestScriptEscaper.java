@@ -65,14 +65,31 @@ public class TestScriptEscaper {
 	}
 	
 	@Test
-	public void shouldEscapeDoubleAndSingleQuotes() {
+	public void shouldEscapeDoubleQuotes() {
 		ScriptEscaper scriptEscaper = new ScriptEscaper(builder.toString())
 			.escapeQuotes();
 		String result = builder.toString()
 				.replace("\"", "\\\"")
-				.replace("'", "\\\'");
+				.replace("'", "\\'");
 		
 		assertEquals(scriptEscaper.toString(), result);
 	}
+
+	@Test
+	public void shouldCreatePlaceholderForSpecificNewline() {
+		String expectedResult = "/*ScriptEscaper:n*/";
+		assertEquals(ScriptEscaper.createNewlinePlaceholder("\n"), expectedResult);
+		expectedResult = "/*ScriptEscaper:rn*/";
+		assertEquals(ScriptEscaper.createNewlinePlaceholder("\r\n"), expectedResult);
+	}
+//	@Test
+//	public void shouldConvertNewLinesToValidMultilineString() {
+//		builder.setMarker("\n");
+//		ScriptEscaper scriptEscaper = new ScriptEscaper(builder.toString())
+//			.newlineToMultiline();
+//		String result = builder.toString()
+//				.replace("\n", ScriptEscaper.createNewlinePlaceholder()+"\" + \"");
+//
+//	}
 
 }
