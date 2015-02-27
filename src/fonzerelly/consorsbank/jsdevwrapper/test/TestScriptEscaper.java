@@ -82,14 +82,16 @@ public class TestScriptEscaper {
 		expectedResult = "/*ScriptEscaper:rn*/";
 		assertEquals(ScriptEscaper.createNewlinePlaceholder("\r\n"), expectedResult);
 	}
-//	@Test
-//	public void shouldConvertNewLinesToValidMultilineString() {
-//		builder.setMarker("\n");
-//		ScriptEscaper scriptEscaper = new ScriptEscaper(builder.toString())
-//			.newlineToMultiline();
-//		String result = builder.toString()
-//				.replace("\n", ScriptEscaper.createNewlinePlaceholder()+"\" + \"");
-//
-//	}
+
+	@Test
+	public void shouldConvertNewLinesToValidMultilineString() {
+		builder.setMarker("\n");
+		ScriptEscaper scriptEscaper = new ScriptEscaper(builder.toString())
+			.newlineToMultiline();
+		String result = builder.toString()
+				.replace("\n", ScriptEscaper.createNewlinePlaceholder("\n")+"\" + \"");
+		assertEquals(result, scriptEscaper.toString());
+
+	}
 
 }

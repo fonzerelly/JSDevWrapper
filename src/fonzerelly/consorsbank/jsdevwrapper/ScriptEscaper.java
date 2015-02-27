@@ -19,9 +19,15 @@ public class ScriptEscaper {
 		return this;
 	}
 
+	private ScriptEscaper replaceNewLine(String newlineType) {
+		this.script = this.script.replace(newlineType, createNewlinePlaceholder(newlineType) + "\" + \"");
+		return this;
+	}
+
 	public ScriptEscaper newlineToMultiline() {
-		// TODO Auto-generated method stub
-		return null;
+		replaceNewLine("\r\n");
+		replaceNewLine("\n");
+		return this;
 	}
 
 	private static String buildTag(String newlineTag) {
@@ -37,6 +43,4 @@ public class ScriptEscaper {
 		}
 		throw new Error("Unknown Line Ending");
 	}
-
-	
 }
