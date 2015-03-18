@@ -9,10 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fonzerelly.consorsbank.jsdevwrapper.ScriptEscaper;
+import fonzerelly.consorsbank.jsdevwrapper.ScriptManipulator;
 
 
 
-public class TestScriptEscaper {
+public class TestScriptEscaper extends TestScriptManipulator {
 	class NewLineStringBuilder {
 		private String newLineMarker;
 		private List<String> lines;
@@ -60,13 +61,13 @@ public class TestScriptEscaper {
 	@Test
 	public void shouldExtractStringAsPassedIntoWhenNotEscaped() {
 	 	builder.setMarker("\r\n");
-		ScriptEscaper scriptEscaper = new ScriptEscaper(builder.toString());
+		ScriptManipulator scriptEscaper = new ScriptEscaper(builder.toString());
 		assertEquals(scriptEscaper.toString(), builder.toString());
 	}
 	
 	@Test
 	public void shouldEscapeDoubleQuotes() {
-		ScriptEscaper scriptEscaper = new ScriptEscaper(builder.toString())
+		ScriptManipulator scriptEscaper = new ScriptEscaper(builder.toString())
 			.escapeQuotes();
 		String result = builder.toString()
 				.replace("\"", "\\\"")
@@ -76,22 +77,13 @@ public class TestScriptEscaper {
 	}
 
 	@Test
-	public void shouldCreatePlaceholderForSpecificNewline() {
-		String expectedResult = "/*ScriptEscaper:n*/";
-		assertEquals(ScriptEscaper.createNewlinePlaceholder("\n"), expectedResult);
-		expectedResult = "/*ScriptEscaper:rn*/";
-		assertEquals(ScriptEscaper.createNewlinePlaceholder("\r\n"), expectedResult);
-	}
-
-	@Test
 	public void shouldConvertNewLinesToValidMultilineString() {
 		builder.setMarker("\n");
-		ScriptEscaper scriptEscaper = new ScriptEscaper(builder.toString())
+		ScriptManipulator scriptEscaper = new ScriptEscaper(builder.toString())
 			.newlineToMultiline();
 		String result = builder.toString()
 				.replace("\n", ScriptEscaper.createNewlinePlaceholder("\n")+"\" + \"");
 		assertEquals(result, scriptEscaper.toString());
-
 	}
 
 }
