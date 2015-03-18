@@ -41,13 +41,13 @@ public class TestJSDevEvaluator {
 		assertTrue("Resulting call not as expected", evaluator.toString().endsWith(result));
 	}
 	
-	//@Test
+	@Test
 	public void shouldReturnEvaluatedScript() throws IOException {
 		JSDevEvaluator evaluator = new JSDevEvaluator();
-		String script = "/*test*/";
+		String script = "/*test test()*/";
 		String[] tags = {"test"};
 		evaluator.appendCall(script, tags);
-		String expectedScriptResult = "{test};";
+		String expectedScriptResult = "{test()}\n";
 		assertEquals(evaluator.evaluate(), expectedScriptResult);
 	}
 

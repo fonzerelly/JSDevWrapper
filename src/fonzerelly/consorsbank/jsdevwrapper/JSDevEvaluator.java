@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+
 
 
 public class JSDevEvaluator {
@@ -54,7 +57,15 @@ public class JSDevEvaluator {
 	}
 
 	public String evaluate() {
-		//Context cx = Context.enter();
-		return "";
+		Context cx = Context.enter();
+		String result;
+		try {
+			Scriptable scope = cx.initStandardObjects();
+			Object resultObj = cx.evaluateString(scope, this.script, "jsdev", 1, null);
+			result = Context.toString(resultObj);
+		} finally {
+			Context.exit();
+		}
+		return result;
 	};
 }
