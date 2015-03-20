@@ -11,44 +11,52 @@ import fonzerelly.consorsbank.jsdevwrapper.*;
 
 public class TestJSDevEvaluator {
 
+	class TestableJSDevEvaluator extends JSDevEvaluator {
+
+		public TestableJSDevEvaluator() throws IOException {
+			super();
+		}
+
+		public String createCall(String script, String[] tags) {
+			return super.createCall(script, tags);
+		}
+
+		public String concatTagArray(String[] tags) {
+			return super.concatTagArray(tags);
+		}
+
+	}
+
+	private TestableJSDevEvaluator instance;
+
 	@Before
 	public void setUp() throws Exception {
+		instance = new TestableJSDevEvaluator();
 	}
 
 	@Test
 	public void shouldProvideJSDevCore() throws IOException {
-		JSDevEvaluator evaluator = new JSDevEvaluator();
-		assertTrue(evaluator.toString().startsWith("// jsdev.js"));		
+		assertTrue(instance.toString().startsWith("// jsdev.js"));
 	}
-	
+
 	@Test
-	public void shouldAppendJSDevCall() throws IOException {
-		JSDevEvaluator evaluator = new JSDevEvaluator();
+	public void shouldConcatArrayOfTagsToJavaScriptArray () {
+		String [] tags = {"test", "debug"};
+		assertEquals(instance.concatTagArray(tags), "[\"test\", \"debug\"]");
+	}
+
+	@Test
+	public void shouldCreateJSDevCall(){
 		String script = "/*test*/";
 		String[] tags = {"test"};
-		evaluator.appendCall(script, tags);
-		String expectedAppendedCall = "JSDEV(\"/*test*/\", [\"test\"]);";
-		assertTrue(evaluator.toString().endsWith(expectedAppendedCall));
+		assertEquals(instance.createCall(script, tags), "JSDEV(\"/*test*/\", [\"test\"]);");
 	}
-	
-	@Test
-	public void shouldAppendJSDevCallWithMultibleTags() throws IOException {
-		JSDevEvaluator evaluator = new JSDevEvaluator();
-		String script = "/*test*/";
-		String[] tags = {"test", "debug"};
-		evaluator.appendCall(script, tags);
-		String result = "JSDEV(\"/*test*/\", [\"test\", \"debug\"]);";
-		assertTrue("Resulting call not as expected", evaluator.toString().endsWith(result));
-	}
-	
+
 	@Test
 	public void shouldReturnEvaluatedScript() throws IOException {
-		JSDevEvaluator evaluator = new JSDevEvaluator();
 		String script = "/*test test()*/";
 		String[] tags = {"test"};
-		evaluator.appendCall(script, tags);
-		String expectedScriptResult = "{test()}\n";
-		assertEquals(evaluator.evaluate(), expectedScriptResult);
+		assertEquals(instance.evaluate(script, tags), "{test()}\n");
 	}
 
 }

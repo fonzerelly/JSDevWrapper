@@ -11,7 +11,7 @@ import org.mozilla.javascript.Scriptable;
 
 
 public class JSDevEvaluator {
-	private String script;
+	private String jsdev;
 	public JSDevEvaluator () throws IOException {
 		StringBuffer sbuf = new StringBuffer();
 		StringBuilder sbuild = new StringBuilder(sbuf);
@@ -25,18 +25,18 @@ public class JSDevEvaluator {
 			sbuild.append((char) letter);
 			letter = reader.read();
 		}
-		this.script = sbuild.toString();
+		this.jsdev = sbuild.toString();
 	}
 	
 	public String toString() {
-		return this.script;
+		return this.jsdev;
 	}
 
 	public JSDevEvaluator readJSDev () {
 		return this;
 	}
 	
-	private String concatTagArray(String[] tags) {
+	protected String concatTagArray(String[] tags) {
 		String result = "";
 		int tagsLeft = tags.length - 1;
 		for(String tag : tags) {
@@ -47,21 +47,23 @@ public class JSDevEvaluator {
 			}
 			tagsLeft--;
 		}
+		return "[" + result + "]";
+	}
+
+	protected String createCall(String script, String[] tags) {
+		String result = "JSDEV(\"" + script + "\", ";
+		result += concatTagArray(tags);
+		result += ");";
 		return result;
 	}
 
-	public void appendCall(String script, String[] tags) {
-		this.script += "JSDEV(\"" + script + "\", [";
-		this.script += concatTagArray(tags);
-		this.script += "]);";
-	}
-
-	public String evaluate() {
+	public String evaluate(String script, String[] tags) {
+		String setup = jsdev + createCall(script, tags);
 		Context cx = Context.enter();
 		String result;
 		try {
 			Scriptable scope = cx.initStandardObjects();
-			Object resultObj = cx.evaluateString(scope, this.script, "jsdev", 1, null);
+			Object resultObj = cx.evaluateString(scope, setup, "jsdev", 1, null);
 			result = Context.toString(resultObj);
 		} finally {
 			Context.exit();
