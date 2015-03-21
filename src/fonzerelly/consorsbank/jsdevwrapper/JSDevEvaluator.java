@@ -16,9 +16,7 @@ public class JSDevEvaluator {
 		StringBuffer sbuf = new StringBuffer();
 		StringBuilder sbuild = new StringBuilder(sbuf);
 		InputStream in = JSDevEvaluator.class.getResourceAsStream("jsdev.js");
-		InputStreamReader inReader = new InputStreamReader(
-			in
-		);
+		InputStreamReader inReader = new InputStreamReader(in);
 		BufferedReader reader = new BufferedReader(inReader);
 		int letter = reader.read();
 		while(letter != -1) {
@@ -32,10 +30,6 @@ public class JSDevEvaluator {
 		return this.jsdev;
 	}
 
-	public JSDevEvaluator readJSDev () {
-		return this;
-	}
-	
 	protected String concatTagArray(String[] tags) {
 		String result = "";
 		int tagsLeft = tags.length - 1;
