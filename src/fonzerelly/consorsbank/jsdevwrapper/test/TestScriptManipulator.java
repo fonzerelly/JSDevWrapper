@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import fonzerelly.consorsbank.jsdevwrapper.ScriptEscaper;
+import fonzerelly.consorsbank.jsdevwrapper.ScriptManipulator;
 
 public class TestScriptManipulator {
 
@@ -14,10 +14,19 @@ public class TestScriptManipulator {
 
 	@Test
 	public void shouldCreatePlaceholderForSpecificNewline() {
-		String expectedResult = "/*ScriptEscaper:n*/";
-		assertEquals(ScriptEscaper.createNewlinePlaceholder("\n"), expectedResult);
-		expectedResult = "/*ScriptEscaper:rn*/";
-		assertEquals(ScriptEscaper.createNewlinePlaceholder("\r\n"), expectedResult);
+		String linuxStylePlaceholder = "/*ScriptEscaper:n*/";
+		assertEquals(ScriptManipulator.createNewlinePlaceholder("\n"), linuxStylePlaceholder);
+		String windowsStylePlaceholder = "/*ScriptEscaper:rn*/";
+		assertEquals(ScriptManipulator.createNewlinePlaceholder("\r\n"), windowsStylePlaceholder);
+	}
+
+	@Test
+	public void shouldResolvePlaceholderForSpecificNewLine() {
+		String linuxStyleNewline = "\n";
+		assertEquals(ScriptManipulator.resolveNewlinePlaceholder("/*ScriptEscaper:n*/"), linuxStyleNewline);
+		String windowsStyleNewline = "\r\n";
+		assertEquals(ScriptManipulator.resolveNewlinePlaceholder("/*ScriptEscaper:rn*/"), windowsStyleNewline);
+
 	}
 
 }

@@ -21,4 +21,13 @@ public class ScriptManipulator {
 		super();
 	}
 
+	public static String resolveNewlinePlaceholder(String newlinePlaceholder) {
+		if (newlinePlaceholder.equals(buildTag("n"))) {
+			return "\n";
+		} else if (newlinePlaceholder.equals(buildTag("rn"))) {
+			return "\r\n";
+		}
+		throw new Error("Unknown Newline Placeholder");
+	}
+
 }
