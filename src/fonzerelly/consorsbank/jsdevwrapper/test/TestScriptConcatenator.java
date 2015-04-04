@@ -13,8 +13,6 @@ public class TestScriptConcatenator extends TestScriptManipulator {
 				                "timesTwo=double(k);";
 		ScriptConcatenator concatenator = new ScriptConcatenator(scriptWithPlaceholders);
 		concatenator.multilineToNewline();
-		System.out.println("\"" + concatenator.toString() + "\"");
-		System.out.println("\"" + resolvedScript + "\"");
 		assertEquals(concatenator.toString(), resolvedScript);
 	}
 }
