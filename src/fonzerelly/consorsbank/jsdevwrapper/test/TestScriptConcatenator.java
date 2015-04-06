@@ -3,6 +3,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import fonzerelly.consorsbank.jsdevwrapper.ScriptConcatenator;
 
 public class TestScriptConcatenator extends TestScriptManipulator {
 	@Test

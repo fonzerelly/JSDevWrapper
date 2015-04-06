@@ -1,6 +1,5 @@
-package fonzerelly.consorsbank.jsdevwrapper.test;
+package fonzerelly.consorsbank.jsdevwrapper;
 
-import fonzerelly.consorsbank.jsdevwrapper.ScriptManipulator;
 
 public class ScriptConcatenator extends ScriptManipulator {
 	public ScriptConcatenator(String script) {
